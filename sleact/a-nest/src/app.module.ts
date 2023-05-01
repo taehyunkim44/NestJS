@@ -3,6 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { UsersModule } from './users/users.module';
+import { WorkspacesModule } from './workspaces/workspaces.module';
+import { ChannelsModule } from './channels/channels.module';
+import { DmsModule } from './dms/dms.module';
+import { UsersService } from './users/users.service';
 
 // // 외부(AWS,GCP 같은 곳에서)에서 env 정보를 받아서 사용할때
 // const getEnv = async () => {
@@ -38,9 +43,15 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 @Module({
   // forRoot() 같은 것들은 설정을 넣어주기 위한 함수
   // imports: [ConfigModule.forRoot({ isGlobal: true, load: [getEnv] })],
-  imports: [ConfigModule.forRoot({ isGlobal: true })],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    UsersModule,
+    WorkspacesModule,
+    ChannelsModule,
+    DmsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, ConfigService],
+  providers: [AppService, UsersService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
